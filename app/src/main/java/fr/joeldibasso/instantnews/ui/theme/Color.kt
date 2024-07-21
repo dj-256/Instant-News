@@ -10,3 +10,10 @@ val MarianBlue = Color(0xFF443E9A)
 val Lavender = Color(0xFFDADAE7)
 val Eminence = Color(0xFF5D337B)
 val MountbattenPink = Color(0xFF7C6F85)
+
+
+val Periwinkle = Color(0xFFC8C5E7)
+val Lavender2 = Color(0xFFE2E0F6)
+val RebeccaPurple = Color(0xFF733B9C)
+val DarkPurple = Color(0xFF14122B)
+val UltraViolet = Color(0xFF595988)
