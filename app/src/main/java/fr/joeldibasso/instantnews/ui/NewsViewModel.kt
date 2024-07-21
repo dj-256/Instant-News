@@ -1,6 +1,5 @@
 package fr.joeldibasso.instantnews.ui
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.joeldibasso.instantnews.InstantNewsApp
@@ -20,5 +19,9 @@ class NewsViewModel: ViewModel() {
             val news = InstantNewsApp.newsClient.getTopNews()
             _uiState.value = TopNewsScreenState(topNews = news, isLoading = false)
         }
+    }
+
+    fun toggleDarkMode() {
+        _uiState.value = _uiState.value.copy(darkMode = !_uiState.value.darkMode)
     }
 }
