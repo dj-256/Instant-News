@@ -61,11 +61,7 @@ fun TopNewsScreen(modifier: Modifier = Modifier, viewModel: NewsViewModel = view
                         modifier = modifier,
                     ) {
                         items(state.topNews) { news ->
-                            NewsCard(
-                                title = news.title,
-                                description = news.description,
-                                imageUrl = news.imageUrl
-                            )
+                            NewsCard(news= news)
                         }
                     }
                 }
