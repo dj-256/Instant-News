@@ -24,6 +24,7 @@ private val LightColorScheme = lightColorScheme(
     primary = RebeccaPurple,
     secondary = CoolGray,
     tertiary = MountbattenPink,
+    surfaceVariant = Magnolia,
     background = Lavender3
 )
 

@@ -20,13 +20,25 @@ class NewsCardTest {
     private val news1 = News(
         title = "Title 1",
         description = "Description 1",
-        imageUrl = "https://example.com/image1.jpg"
+        source = "Source 1",
+        url = "https://example.com",
+        urlToImage = "https://example.com/image1.jpg"
     )
 
     private val news2 = News(
         title = "Title So Big You Will Definitely Need At Least Two Lines To Display It",
         description = "Lorem ipsum odor amet, consectetuer adipiscing elit. Mus risus pretium iaculis eu purus. Vehicula accumsan mus lacus viverra et sed sociosqu habitant. Convallis ligula fringilla suspendisse commodo inceptos eget. Feugiat praesent ac non eros bibendum. Ullamcorper tortor velit, tempus lorem cras curae amet. Posuere ligula libero nisi hendrerit finibus est. Bibendum pulvinar quis; elementum vehicula tristique purus senectus porttitor. Faucibus non commodo sociosqu dapibus aliquet, vivamus auctor fermentum eleifend? Adipiscing metus dapibus velit mus facilisis sem erat blandit. Vel pharetra aenean hac integer molestie nascetur. Accumsan aliquam ullamcorper quisque ut; scelerisque erat magna nisi. Luctus gravida elementum integer donec sodales. Curae arcu torquent purus suscipit; suscipit egestas aliquet. Dolor per metus aliquam volutpat ex. Nisi iaculis et vivamus ullamcorper sem sapien turpis orci accumsan? Phasellus duis orci vivamus quam dui integer. Class ligula leo ipsum velit; nascetur efficitur.",
-        imageUrl = "https://example.com/image2.jpg"
+        source = "Source 2",
+        url = "https://example.com",
+        urlToImage = "https://example.com/image2.jpg"
+    )
+
+    private val news3 = News(
+        title = "Title 3",
+        description = "Description 3",
+        source = "Source 3",
+        url = "https://example.com",
+        urlToImage = null
     )
 
     @Test
@@ -51,5 +63,13 @@ class NewsCardTest {
             NewsCard(news2)
         }
         composeTestRule.onNodeWithTag("news_title").assertHeightIsAtLeast(48.dp)
+    }
+
+    @Test
+    fun imageUrlNull() {
+        composeTestRule.setContent {
+            NewsCard(news3)
+        }
+        composeTestRule.onNodeWithTag("news_title").assertExists()
     }
 }

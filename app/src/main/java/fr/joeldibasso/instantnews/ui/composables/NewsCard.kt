@@ -31,30 +31,43 @@ fun NewsCard(news: News, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(12.dp)
         ) {
-            AsyncImage(
-                model = news.imageUrl,
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .height(200.dp)
-                    .clip(RoundedCornerShape(10.dp)))
+            news.urlToImage?.let {
+                AsyncImage(
+                    model = news.urlToImage,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .height(200.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                )
+            }
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = news.title,
+                    text = news.title.substringBeforeLast("-"),
+                    minLines = 3,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.testTag("news_title")
                 )
                 Text(
-                    text = news.description,
-                    style = MaterialTheme.typography.bodySmall,
-                    overflow = TextOverflow.Ellipsis,
+                    text = news.source,
+                    style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSecondary,
-                    modifier = Modifier.height(30.dp)
-                        .testTag("news_description"),
+                    modifier = Modifier.testTag("news_source")
                 )
+                news.description?.let {
+                    Text(
+                        text = news.description,
+                        style = MaterialTheme.typography.bodySmall,
+                        overflow = TextOverflow.Ellipsis,
+                        color = MaterialTheme.colorScheme.onSecondary,
+                        modifier = Modifier
+                            .height(30.dp)
+                            .testTag("news_description"),
+                    )
+                }
             }
         }
     }
@@ -65,11 +78,14 @@ fun NewsCard(news: News, modifier: Modifier = Modifier) {
 @Composable
 fun NewsCardPreview() {
     InstantNewsTheme {
-        NewsCard(News(
-            title = "Un beau titre",
-            description = "Lorem ipsum dolor sit amet consectetur. Lectus varius eu turpis vulputate libero sed.",
-            imageUrl = "https://media.wired.com/photos/6696630a5d2d61e4805c3175/191:100/w_1280,c_limit/GettyImages-1979197796.jpg"
-        )
+        NewsCard(
+            News(
+                title = "Un beau titre",
+                description = "Lorem ipsum dolor sit amet consectetur. Lectus varius eu turpis vulputate libero sed.",
+                url = "https://www.wired.com",
+                urlToImage = "https://media.wired.com/photos/6696630a5d2d61e4805c3175/191:100/w_1280,c_limit/GettyImages-1979197796.jpg",
+                source = "Wired"
+            )
         )
     }
 }
@@ -78,11 +94,14 @@ fun NewsCardPreview() {
 @Composable
 fun NewsCardPreviewDark() {
     InstantNewsTheme(darkTheme = true) {
-        NewsCard(News(
-            title = "Un beau titre",
-            description = "Lorem ipsum dolor sit amet consectetur. Lectus varius eu turpis vulputate libero sed.",
-            imageUrl = "https://media.wired.com/photos/6696630a5d2d61e4805c3175/191:100/w_1280,c_limit/GettyImages-1979197796.jpg"
-        )
+        NewsCard(
+            News(
+                title = "Un beau titre",
+                description = "Lorem ipsum dolor sit amet consectetur. Lectus varius eu turpis vulputate libero sed.",
+                url = "https://www.wired.com",
+                urlToImage = "https://media.wired.com/photos/6696630a5d2d61e4805c3175/191:100/w_1280,c_limit/GettyImages-1979197796.jpg",
+                source = "Wired"
+            )
         )
     }
 }
