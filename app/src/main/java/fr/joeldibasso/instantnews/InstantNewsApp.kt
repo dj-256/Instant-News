@@ -14,7 +14,6 @@ class InstantNewsApp : Application() {
         val retrofitInstance: NewsClient by lazy {
             val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(Interceptor { chain ->
                 val newRequest: Request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer <token>")
                     .build()
                 chain.proceed(newRequest)
             }).build()

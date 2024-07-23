@@ -3,7 +3,6 @@ package fr.joeldibasso.instantnews.ui
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import coil.network.HttpException
 import fr.joeldibasso.instantnews.InstantNewsApp
 import fr.joeldibasso.instantnews.model.News
 import fr.joeldibasso.instantnews.ui.composables.TopNewsScreenState
@@ -12,16 +11,33 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import okio.IOException
+import retrofit2.HttpException
 
 class NewsViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(TopNewsScreenState())
     val uiState: StateFlow<TopNewsScreenState> = _uiState.asStateFlow()
 
-    fun getTopNews() {
+    fun checkToken(token: String) {
         viewModelScope.launch {
-            _uiState.value = TopNewsScreenState(isLoading = true)
+            try {
+                InstantNewsApp.retrofitInstance.getTopNews("Bearer $token")
+                _uiState.value = _uiState.value.copy(isLoggedIn = true, token = token)
+                Log.d("NewsViewModel", "_uiState.value.token1: ${_uiState.value.token}")
+            } catch (e: IOException) {
+                Log.e("NewsViewModel", "Error fetching news", e)
+                return@launch
+            } catch (e: HttpException) {
+                Log.e("NewsViewModel", "Error fetching news", e)
+                return@launch
+            }
+        }
+    }
+
+    fun getTopNews() {
+        _uiState.value = _uiState.value.copy(isLoading = true)
+        viewModelScope.launch {
             val response = try {
-                InstantNewsApp.retrofitInstance.getTopNews()
+                InstantNewsApp.retrofitInstance.getTopNews("Bearer ${_uiState.value.token!!}")
             } catch (e: IOException) {
                 Log.e("NewsViewModel", "Error fetching news", e)
                 return@launch
@@ -38,7 +54,7 @@ class NewsViewModel : ViewModel() {
                     source = it.source.name
                 )
             } ?: emptyList()
-            _uiState.value = TopNewsScreenState(topNews = news, isLoading = false)
+            _uiState.value = _uiState.value.copy(topNews = news, isLoading = false)
         }
     }
 

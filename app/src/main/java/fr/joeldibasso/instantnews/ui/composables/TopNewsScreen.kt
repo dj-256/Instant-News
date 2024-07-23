@@ -35,7 +35,10 @@ import fr.joeldibasso.instantnews.ui.NewsViewModel
 import fr.joeldibasso.instantnews.ui.theme.InstantNewsTheme
 
 @Composable
-fun TopNewsScreen(modifier: Modifier = Modifier, viewModel: NewsViewModel = viewModel()) {
+fun TopNewsScreen(
+    modifier: Modifier = Modifier,
+    viewModel: NewsViewModel = viewModel()
+) {
 
     val state by viewModel.uiState.collectAsState()
     LaunchedEffect(null) {
