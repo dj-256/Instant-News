@@ -10,6 +10,8 @@ activityCompose = "1.9.0"
 composeBom = "2024.06.00"
 coil = "2.7.0"
 retrofit = "2.11.0"
+camera = "1.4.0-beta02"
+zxing = "3.4.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,9 +33,14 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+camera = { group = "androidx.camera", name = "camera-camera2", version.ref = "camera" }
+camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camera" }
+camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camera" }
+zxing = { group = 'com.google.zxing', name = 'core', version.ref = "zxing" }
 
 [bundles]
 androidx-compose = ["androidx-ui", "androidx-ui-graphics", "androidx-ui-tooling", "androidx-ui-tooling-preview", "androidx-material3", "androidx-google-font"]
+camera = ["camera", "camera-lifecycle", "camera-view"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

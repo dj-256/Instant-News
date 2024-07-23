@@ -61,6 +61,8 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
+    implementation(libs.bundles.camera)
+    implementation(libs.zxing)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

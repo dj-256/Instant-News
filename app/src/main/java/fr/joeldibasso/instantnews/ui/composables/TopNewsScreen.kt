@@ -46,7 +46,8 @@ fun TopNewsScreen(modifier: Modifier = Modifier, viewModel: NewsViewModel = view
             Row(
                 modifier = Modifier
                     .statusBarsPadding()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 8.dp, bottom = 4.dp)
             ) {
                 Text(
                     text = "Top News",
@@ -87,12 +88,11 @@ fun TopNewsScreen(modifier: Modifier = Modifier, viewModel: NewsViewModel = view
                 Column(
                     modifier = Modifier
                         .padding(paddingValues)
-                        .padding(horizontal = 16.dp)
                 ) {
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(12.dp),
-                        modifier = modifier
                     ) {
+                        item { Spacer(modifier = Modifier.height(4.dp)) }
                         items(state.topNews) { news ->
                             NewsCard(news = news)
                         }

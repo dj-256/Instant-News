@@ -23,8 +23,9 @@ import fr.joeldibasso.instantnews.ui.theme.InstantNewsTheme
 @Composable
 fun NewsCard(news: News, modifier: Modifier = Modifier) {
     Card(
-        modifier,
         shape = RoundedCornerShape(20.dp),
+        modifier = modifier
+            .padding(horizontal = 16.dp)
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -46,7 +47,7 @@ fun NewsCard(news: News, modifier: Modifier = Modifier) {
             ) {
                 Text(
                     text = news.title.substringBeforeLast("-"),
-                    minLines = 3,
+                    minLines = news.urlToImage?.let { 1 } ?: 3,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.testTag("news_title")
