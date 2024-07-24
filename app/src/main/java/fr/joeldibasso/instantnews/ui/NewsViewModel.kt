@@ -18,6 +18,7 @@ class NewsViewModel : ViewModel() {
     val uiState: StateFlow<TopNewsScreenState> = _uiState.asStateFlow()
 
     fun checkToken(token: String) {
+        _uiState.value = _uiState.value.copy(isLoading = true)
         viewModelScope.launch {
             try {
                 InstantNewsApp.retrofitInstance.getTopNews("Bearer $token")
@@ -29,6 +30,8 @@ class NewsViewModel : ViewModel() {
             } catch (e: HttpException) {
                 Log.e("NewsViewModel", "Error fetching news", e)
                 return@launch
+            } finally {
+                _uiState.value = _uiState.value.copy(isLoading = false)
             }
         }
     }

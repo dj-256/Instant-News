@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,25 +25,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val viewModel: NewsViewModel by viewModels()
-
+        val prefs = this.getSharedPreferences("instant_news", 0)
+        val token = prefs.getString("token", null)
+        if (token != null) {
+            viewModel.checkToken(token)
+        }
         enableEdgeToEdge()
         setContent {
-            val context = LocalView.current.context
             val navController = rememberNavController()
             val state by viewModel.uiState.collectAsState()
-
-            LaunchedEffect(key1 = true) {
-                val prefs = context.getSharedPreferences("instant_news", 0)
-                val token = prefs.getString("token", null)
-                if (token != null) {
-                    viewModel.checkToken(token)
-                }
-            }
-            LaunchedEffect(key1 = state.isLoggedIn) {
-                if (state.isLoggedIn) {
-                    navController.navigate("top_news")
-                }
-            }
             val darkMode = state.darkMode
             val view = LocalView.current
             if (!view.isInEditMode) {
@@ -56,9 +46,14 @@ class MainActivity : ComponentActivity() {
                 }
             }
             InstantNewsTheme(darkTheme = darkMode) {
-                NavHost(navController = navController, startDestination = "onboarding") {
+                NavHost(
+                    navController = navController,
+                    startDestination = if (state.isLoggedIn) "top_news" else "onboarding"
+                ) {
                     composable("onboarding") {
-                        Onboarding(navController = navController)
+                        AnimatedVisibility(visible = !state.isLoading) {
+                            Onboarding(navController = navController)
+                        }
                     }
                     composable("scan_qr") {
                         QrCodeScanScreen(navController = navController, viewModel = viewModel)
