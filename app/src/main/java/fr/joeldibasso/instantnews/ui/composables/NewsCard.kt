@@ -49,7 +49,7 @@ fun NewsCard(news: News, modifier: Modifier = Modifier, onClick: () -> Unit = {}
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = news.title.substringBeforeLast("-"),
+                    text = news.title,
                     minLines = news.urlToImage?.let { 1 } ?: 3,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,

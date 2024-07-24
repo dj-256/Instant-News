@@ -50,12 +50,12 @@ class NewsViewModel : ViewModel() {
             }
             val news = response.body()?.articles?.map {
                 News(
-                    title = it.title,
+                    title = it.title.substringBeforeLast("-"),
                     description = it.description,
                     url = it.url,
                     urlToImage = it.urlToImage,
                     source = it.source.name,
-                    content = it.content
+                    content = it.content?.substringBeforeLast("[")
                 )
             } ?: emptyList()
             _uiState.value = _uiState.value.copy(topNews = news, isLoading = false)

@@ -91,7 +91,7 @@ fun NewsDetails(
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onSecondary
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
                 news.description?.let {
                     Text(
                         text = news.description,
@@ -99,7 +99,7 @@ fun NewsDetails(
                         color = MaterialTheme.colorScheme.onSecondary
                     )
                 }
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 news.urlToImage?.let {
                     AsyncImage(
                         model = it, contentDescription = null, contentScale = ContentScale.Crop,
@@ -108,7 +108,7 @@ fun NewsDetails(
                             .clip(RoundedCornerShape(10.dp))
                     )
                 }
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 news.content?.let { Text(text = news.content) }
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -116,7 +116,7 @@ fun NewsDetails(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier
-                    .padding(bottom = 60.dp)
+                    .padding(bottom = 40.dp)
             ) {
                 Button(onClick = {
                     uriHandler.openUri(news.url)
