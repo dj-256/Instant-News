@@ -40,7 +40,7 @@ class NewsViewModel : ViewModel() {
         _uiState.value = _uiState.value.copy(isLoading = true)
         viewModelScope.launch {
             val response = try {
-                InstantNewsApp.retrofitInstance.getTopNews("Bearer ${_uiState.value.token!!}")
+                InstantNewsApp.retrofitInstance.getTopNews("Bearer ${_uiState.value.token}")
             } catch (e: IOException) {
                 Log.e("NewsViewModel", "Error fetching news", e)
                 return@launch
