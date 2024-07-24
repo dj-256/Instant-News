@@ -4,6 +4,7 @@ import fr.joeldibasso.instantnews.model.News
 
 data class TopNewsScreenState(
     val isLoading: Boolean = false,
+    val isInitialLoading: Boolean = true,
     val topNews: List<News> = emptyList(),
     val error: String = "",
     val darkMode: Boolean = false,

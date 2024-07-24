@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -50,35 +49,38 @@ class MainActivity : ComponentActivity() {
                 }
             }
             InstantNewsTheme(darkTheme = darkMode) {
-                NavHost(
-                    navController = navController,
-                    startDestination = if (state.isLoggedIn) "top_news" else "onboarding"
-                ) {
-                    composable("onboarding") {
-                        AnimatedVisibility(visible = !state.isLoading) {
+                if (state.isInitialLoading) {
+                    LoadingScreen()
+                } else {
+                    NavHost(
+                        navController = navController,
+                        startDestination = if (state.isLoggedIn) "top_news" else "onboarding"
+                    ) {
+                        composable("onboarding") {
+
                             Onboarding(navController = navController)
                         }
-                    }
-                    composable("scan_qr") {
-                        QrCodeScanScreen(navController = navController, viewModel = viewModel)
-                    }
-                    composable("top_news") {
-                        TopNewsScreen(viewModel = viewModel, navController = navController)
-                    }
+                        composable("scan_qr") {
+                            QrCodeScanScreen(navController = navController, viewModel = viewModel)
+                        }
+                        composable("top_news") {
+                            TopNewsScreen(viewModel = viewModel, navController = navController)
+                        }
 
-                    composable(
-                        "details/{index}",
-                        arguments = listOf(navArgument("index") { type = NavType.IntType })
-                    ) {
-                        val index = it.arguments?.getInt("index")
-                        state.topNews.getOrNull(index ?: 0)?.let { news ->
-                            NewsDetails(
-                                news = news,
-                                viewModel = viewModel,
-                                navController = navController
-                            )
-                        } ?: run {
-                            LoadingScreen()
+                        composable(
+                            "details/{index}",
+                            arguments = listOf(navArgument("index") { type = NavType.IntType })
+                        ) {
+                            val index = it.arguments?.getInt("index")
+                            state.topNews.getOrNull(index ?: 0)?.let { news ->
+                                NewsDetails(
+                                    news = news,
+                                    viewModel = viewModel,
+                                    navController = navController
+                                )
+                            } ?: run {
+                                LoadingScreen()
+                            }
                         }
                     }
                 }
