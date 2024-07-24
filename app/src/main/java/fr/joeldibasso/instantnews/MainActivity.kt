@@ -12,10 +12,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import fr.joeldibasso.instantnews.ui.NewsViewModel
+import fr.joeldibasso.instantnews.ui.composables.LoadingScreen
+import fr.joeldibasso.instantnews.ui.composables.NewsDetails
 import fr.joeldibasso.instantnews.ui.composables.Onboarding
 import fr.joeldibasso.instantnews.ui.composables.QrCodeScanScreen
 import fr.joeldibasso.instantnews.ui.composables.TopNewsScreen
@@ -59,7 +63,19 @@ class MainActivity : ComponentActivity() {
                         QrCodeScanScreen(navController = navController, viewModel = viewModel)
                     }
                     composable("top_news") {
-                        TopNewsScreen(viewModel = viewModel)
+                        TopNewsScreen(viewModel = viewModel, navController = navController)
+                    }
+
+                    composable(
+                        "details/{index}",
+                        arguments = listOf(navArgument("index") { type = NavType.IntType })
+                    ) {
+                        val index = it.arguments?.getInt("index")
+                        state.topNews.getOrNull(index ?: 0)?.let { news ->
+                            NewsDetails(news = news, navController = navController)
+                        } ?: run {
+                            LoadingScreen()
+                        }
                     }
                 }
             }

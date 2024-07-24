@@ -8,36 +8,41 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import fr.joeldibasso.instantnews.R
 import fr.joeldibasso.instantnews.ui.NewsViewModel
 import fr.joeldibasso.instantnews.ui.theme.InstantNewsTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopNewsScreen(
     modifier: Modifier = Modifier,
-    viewModel: NewsViewModel = viewModel()
+    viewModel: NewsViewModel = viewModel(),
+    navController: NavController = rememberNavController()
 ) {
 
     val state by viewModel.uiState.collectAsState()
@@ -46,21 +51,14 @@ fun TopNewsScreen(
     }
     Scaffold(
         topBar = {
-            Row(
-                modifier = Modifier
-                    .statusBarsPadding()
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 8.dp, bottom = 4.dp)
-            ) {
-                Text(
-                    text = "Top News",
-                    style = MaterialTheme.typography.headlineLarge,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Top News",
+                        style = MaterialTheme.typography.headlineLarge,
+                    )
+                },
+                actions = {
                     AnimatedContent(
                         targetState = state.darkMode,
                         label = "dark mode icon",
@@ -76,11 +74,20 @@ fun TopNewsScreen(
                             tint = MaterialTheme.colorScheme.onSecondary
                         )
                     }
+                    Spacer(modifier = Modifier.width(4.dp))
                     Switch(
                         checked = state.darkMode,
                         onCheckedChange = { viewModel.toggleDarkMode() })
-                }
-            }
+                    Spacer(modifier = Modifier.width(4.dp))
+                },
+                colors = TopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                    scrolledContainerColor = MaterialTheme.colorScheme.background,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+                    actionIconContentColor = MaterialTheme.colorScheme.onSurface,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface,
+                )
+            )
         },
         modifier = modifier
     ) { paddingValues ->
@@ -96,8 +103,10 @@ fun TopNewsScreen(
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                     ) {
                         item { Spacer(modifier = Modifier.height(4.dp)) }
-                        items(state.topNews) { news ->
-                            NewsCard(news = news)
+                        itemsIndexed(state.topNews) { index, news ->
+                            NewsCard(news = news) {
+                                navController.navigate("details/$index")
+                            }
                         }
                         item { Spacer(modifier = Modifier.height(32.dp)) }
                     }
@@ -108,8 +117,8 @@ fun TopNewsScreen(
 }
 
 @Composable
-fun LoadingScreen() {
-    Text(text = "Loading...")
+fun LoadingScreen(modifier: Modifier = Modifier) {
+    Text(text = "Loading...", modifier = modifier)
 }
 
 @Preview(showBackground = true)

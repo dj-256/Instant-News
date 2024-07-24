@@ -1,5 +1,6 @@
 package fr.joeldibasso.instantnews.ui.composables
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -21,11 +22,13 @@ import fr.joeldibasso.instantnews.model.News
 import fr.joeldibasso.instantnews.ui.theme.InstantNewsTheme
 
 @Composable
-fun NewsCard(news: News, modifier: Modifier = Modifier) {
+fun NewsCard(news: News, modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
     Card(
         shape = RoundedCornerShape(20.dp),
         modifier = modifier
             .padding(horizontal = 16.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .clickable { onClick() }
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(12.dp),

@@ -27,6 +27,11 @@ val Typography = Typography(
         fontSize = 16.sp,
         lineHeight = 24.sp,
     ),
+    headlineMedium = TextStyle(
+        fontFamily = FontFamily.RobotoCondensed,
+        fontWeight = FontWeight.Medium,
+        fontSize = 28.sp,
+    ),
     headlineLarge = TextStyle(
         fontFamily = FontFamily.RobotoCondensed,
         fontWeight = FontWeight.SemiBold,

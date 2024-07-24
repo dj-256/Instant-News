@@ -54,7 +54,8 @@ class NewsViewModel : ViewModel() {
                     description = it.description,
                     url = it.url,
                     urlToImage = it.urlToImage,
-                    source = it.source.name
+                    source = it.source.name,
+                    content = it.content
                 )
             } ?: emptyList()
             _uiState.value = _uiState.value.copy(topNews = news, isLoading = false)
