@@ -72,7 +72,11 @@ class MainActivity : ComponentActivity() {
                     ) {
                         val index = it.arguments?.getInt("index")
                         state.topNews.getOrNull(index ?: 0)?.let { news ->
-                            NewsDetails(news = news, navController = navController)
+                            NewsDetails(
+                                news = news,
+                                viewModel = viewModel,
+                                navController = navController
+                            )
                         } ?: run {
                             LoadingScreen()
                         }

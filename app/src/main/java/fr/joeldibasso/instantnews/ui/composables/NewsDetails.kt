@@ -20,6 +20,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,10 +31,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import fr.joeldibasso.instantnews.model.News
+import fr.joeldibasso.instantnews.ui.NewsViewModel
 import fr.joeldibasso.instantnews.ui.theme.InstantNewsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,9 +44,11 @@ import fr.joeldibasso.instantnews.ui.theme.InstantNewsTheme
 fun NewsDetails(
     news: News,
     modifier: Modifier = Modifier,
+    viewModel: NewsViewModel = viewModel(),
     navController: NavController = rememberNavController()
 ) {
     val uriHandler = LocalUriHandler.current
+    val state by viewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -54,6 +60,11 @@ fun NewsDetails(
                             imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
                             contentDescription = "Back"
                         )
+                    }
+                },
+                actions = {
+                    DarkModeToggle(isDarkMode = state.darkMode) {
+                        viewModel.toggleDarkMode()
                     }
                 },
                 colors = TopAppBarColors(
@@ -72,15 +83,15 @@ fun NewsDetails(
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth()
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
+            Column {
                 Text(text = news.title, style = MaterialTheme.typography.headlineMedium)
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = news.source,
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.onSecondary
                 )
+                Spacer(modifier = Modifier.height(8.dp))
                 news.description?.let {
                     Text(
                         text = news.description,
@@ -88,6 +99,7 @@ fun NewsDetails(
                         color = MaterialTheme.colorScheme.onSecondary
                     )
                 }
+                Spacer(modifier = Modifier.height(4.dp))
                 news.urlToImage?.let {
                     AsyncImage(
                         model = it, contentDescription = null, contentScale = ContentScale.Crop,
