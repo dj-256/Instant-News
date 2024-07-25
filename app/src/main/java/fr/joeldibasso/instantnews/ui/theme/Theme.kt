@@ -22,10 +22,11 @@ private val LightColorScheme = lightColorScheme(
     onSurface = SpaceCadet,
     onSecondary = SlateGray,
     primary = RebeccaPurple,
+    onPrimary = GhostWhite,
     secondary = CoolGray,
     tertiary = MountbattenPink,
     surfaceVariant = GhostWhite,
-    background = Lavender3
+    background = Lavender
 )
 
 @Composable

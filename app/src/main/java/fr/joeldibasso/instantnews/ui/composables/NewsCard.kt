@@ -3,6 +3,7 @@ package fr.joeldibasso.instantnews.ui.composables
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -27,6 +27,7 @@ fun NewsCard(news: News, modifier: Modifier = Modifier, onClick: () -> Unit = {}
         shape = RoundedCornerShape(20.dp),
         modifier = modifier
             .padding(horizontal = 16.dp)
+            .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
             .clickable { onClick() }
     ) {
@@ -61,17 +62,6 @@ fun NewsCard(news: News, modifier: Modifier = Modifier, onClick: () -> Unit = {}
                     color = MaterialTheme.colorScheme.onSecondary,
                     modifier = Modifier.testTag("news_source")
                 )
-                news.description?.let {
-                    Text(
-                        text = news.description,
-                        style = MaterialTheme.typography.bodySmall,
-                        overflow = TextOverflow.Ellipsis,
-                        color = MaterialTheme.colorScheme.onSecondary,
-                        modifier = Modifier
-                            .height(30.dp)
-                            .testTag("news_description"),
-                    )
-                }
             }
         }
     }
