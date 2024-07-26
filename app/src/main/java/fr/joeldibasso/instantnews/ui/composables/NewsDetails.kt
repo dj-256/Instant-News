@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,7 +51,8 @@ fun NewsDetails(
                 Text(
                     text = news.description,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSecondary
+                    color = MaterialTheme.colorScheme.onSecondary,
+                    modifier = Modifier.testTag("news_description")
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -60,10 +62,16 @@ fun NewsDetails(
                     modifier = Modifier
                         .height(200.dp)
                         .clip(RoundedCornerShape(10.dp))
+                        .testTag("news_image")
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            news.content?.let { Text(text = news.content) }
+            news.content?.let {
+                Text(
+                    text = news.content,
+                    modifier = Modifier.testTag("news_content")
+                )
+            }
         }
         Spacer(modifier = Modifier.weight(1f))
         Column(
