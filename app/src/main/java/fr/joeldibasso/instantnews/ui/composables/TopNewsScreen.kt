@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,9 +39,6 @@ fun TopNewsScreen(
 
     val state by viewModel.uiState.collectAsState()
     val scrollState = rememberLazyListState()
-    LaunchedEffect(null) {
-        viewModel.getTopNews()
-    }
     AnimatedContent(state.isLoading, label = "", transitionSpec = {
         (scaleIn(
             animationSpec = tween(250, easing = EaseOut)

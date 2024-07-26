@@ -15,4 +15,5 @@ val FontFamily.Companion.Roboto: FontFamily
 val FontFamily.Companion.RobotoCondensed: FontFamily
     get() = FontFamily(
         Font(R.font.roboto_condensed_semi_bold, FontWeight.SemiBold),
+        Font(R.font.roboto_condensed_bold, FontWeight.Bold)
     )

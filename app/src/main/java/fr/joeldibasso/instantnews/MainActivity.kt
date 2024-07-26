@@ -14,6 +14,7 @@ import androidx.compose.animation.core.EaseIn
 import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -59,7 +60,9 @@ class MainActivity : ComponentActivity() {
         val prefs = this.getSharedPreferences("instant_news", 0)
         val token = prefs.getString("token", null)
         if (token != null) {
-            viewModel.checkToken(token)
+            viewModel.getTopNews(token)
+        } else {
+            viewModel.finishInitialLoad()
         }
 
         setContent {
@@ -71,52 +74,54 @@ class MainActivity : ComponentActivity() {
             InstantNewsTheme(darkTheme = darkMode) {
                 Scaffold(
                     topBar = {
-                        TopAppBar(
-                            title = {
-                                AnimatedVisibility(
-                                    currentRoute == "app/top_news",
-                                    enter = scaleIn(
-                                        tween(
-                                            durationMillis = 200,
-                                            easing = EaseOut
-                                        )
-                                    ) + fadeIn(
-                                        tween(
-                                            durationMillis = 150,
-                                            easing = EaseIn
-                                        )
-                                    ),
-                                    exit = ExitTransition.None
-                                ) {
-                                    Text(
-                                        text = "Top News",
-                                        style = MaterialTheme.typography.headlineLarge,
-                                    )
-                                }
-                            },
-                            navigationIcon = {
-                                if (currentRoute?.startsWith("app/details") == true) {
-                                    IconButton(onClick = { navController.popBackStack() }) {
-                                        Icon(
-                                            imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-                                            contentDescription = "Back"
+                        AnimatedVisibility(currentRoute?.startsWith("app") == true) {
+                            TopAppBar(
+                                title = {
+                                    AnimatedVisibility(
+                                        currentRoute == "app/top_news",
+                                        enter = scaleIn(
+                                            tween(
+                                                durationMillis = 200,
+                                                easing = EaseOut
+                                            )
+                                        ) + fadeIn(
+                                            tween(
+                                                durationMillis = 150,
+                                                easing = EaseIn
+                                            )
+                                        ),
+                                        exit = ExitTransition.None
+                                    ) {
+                                        Text(
+                                            text = "Top News",
+                                            style = MaterialTheme.typography.headlineLarge,
                                         )
                                     }
-                                }
-                            },
-                            actions = {
-                                DarkModeToggle(isDarkMode = state.darkMode) {
-                                    viewModel.toggleDarkMode()
-                                }
-                            },
-                            colors = TopAppBarColors(
-                                containerColor = MaterialTheme.colorScheme.background,
-                                scrolledContainerColor = MaterialTheme.colorScheme.background,
-                                navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
-                                actionIconContentColor = MaterialTheme.colorScheme.onSurface,
-                                titleContentColor = MaterialTheme.colorScheme.onSurface,
+                                },
+                                navigationIcon = {
+                                    if (currentRoute?.startsWith("app/details") == true) {
+                                        IconButton(onClick = { navController.popBackStack() }) {
+                                            Icon(
+                                                imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+                                                contentDescription = "Back"
+                                            )
+                                        }
+                                    }
+                                },
+                                actions = {
+                                    DarkModeToggle(isDarkMode = state.darkMode) {
+                                        viewModel.toggleDarkMode()
+                                    }
+                                },
+                                colors = TopAppBarColors(
+                                    containerColor = MaterialTheme.colorScheme.background,
+                                    scrolledContainerColor = MaterialTheme.colorScheme.background,
+                                    navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
+                                    actionIconContentColor = MaterialTheme.colorScheme.onSurface,
+                                    titleContentColor = MaterialTheme.colorScheme.onSurface,
+                                )
                             )
-                        )
+                        }
                     },
                 ) { innerPadding ->
                     if (state.isInitialLoading) {
@@ -144,10 +149,10 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 composable(
                                     "app/top_news",
-                                    enterTransition = {
+                                    popEnterTransition = {
                                         scaleIn(
                                             animationSpec = tween(250, easing = EaseOut)
-                                        ) + fadeIn(animationSpec = tween(250, easing = EaseIn))
+                                        ) + fadeIn(animationSpec = tween(200, easing = EaseOut))
                                     },
                                     exitTransition = {
                                         slideOutOfContainer(
@@ -173,18 +178,16 @@ class MainActivity : ComponentActivity() {
                                             towards = AnimatedContentTransitionScope.SlideDirection.Start
                                         )
                                     },
-                                    exitTransition = {
+                                    popExitTransition = {
                                         slideOutOfContainer(
                                             animationSpec = tween(250, easing = EaseIn),
                                             towards = AnimatedContentTransitionScope.SlideDirection.End
-                                        )
+                                        ) + fadeOut(animationSpec = tween(200, easing = EaseIn))
                                     }
                                 ) {
                                     val index = it.arguments?.getInt("index")
                                     state.topNews.getOrNull(index ?: 0)?.let { news ->
-                                        NewsDetails(
-                                            news = news,
-                                        )
+                                        NewsDetails(news = news)
                                     } ?: run {
                                         LoadingScreen(modifier = Modifier.padding(innerPadding))
                                     }

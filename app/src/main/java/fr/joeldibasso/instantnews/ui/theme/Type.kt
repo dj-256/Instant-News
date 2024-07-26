@@ -34,7 +34,7 @@ val Typography = Typography(
     ),
     headlineLarge = TextStyle(
         fontFamily = FontFamily.RobotoCondensed,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight.Bold,
         fontSize = 36.sp,
         letterSpacing = 0.sp
     )
