@@ -33,6 +33,14 @@ import androidx.navigation.compose.rememberNavController
 import fr.joeldibasso.instantnews.ui.NewsViewModel
 import fr.joeldibasso.instantnews.ui.theme.InstantNewsTheme
 
+/**
+ * OnboardingLower is the lower part of the onboarding screen.
+ * It contains the buttons to navigate between the different onboarding screens.
+ * @param currentRoute The current route of the onboarding screen.
+ * @param navController The navigation controller that manages the navigation.
+ * @param viewModel The NewsViewModel used to interact with the app state.
+ * @param modifier The modifier for this composable.
+ */
 @Composable
 fun OnboardingLower(
     currentRoute: String,
@@ -79,6 +87,7 @@ fun OnboardingLower(
         modifier = modifier
     ) {
         when (currentRoute.substringAfter("/")) {
+            // The "welcome" screen displays two buttons to log in with a token or a QR code
             "welcome" -> {
                 InstantButton(
                     onClick = {
@@ -94,21 +103,26 @@ fun OnboardingLower(
                 )
             }
 
+            // The "login_error" screen displays two buttons to try again with the same method or switch to the other method
             "login_error" -> {
                 InstantButton(
                     onClick = {
-                        viewModel.clearLogginError()
-                        when (state.loginMethod) {
-                            LoginMethod.TOKEN -> navController.navigate("onboarding/type_token")
-                            LoginMethod.QR_CODE -> navController.navigate("onboarding/scan_qr")
-                        }
+                        viewModel.clearLoginError()
+                        // The "Try again" button navigates to the screen matching the login method
+                        navController.navigate(
+                            route = when (state.loginMethod) {
+                                LoginMethod.TOKEN -> "onboarding/type_token"
+                                LoginMethod.QR_CODE -> "onboarding/scan_qr"
+                            }
+                        )
                     },
                     text = "Try again"
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 InstantButton(
                     onClick = {
-                        viewModel.clearLogginError()
+                        viewModel.clearLoginError()
+                        // The second button navigates to the screen matching the other login method
                         navController.navigate(
                             route = when (state.loginMethod) {
                                 LoginMethod.TOKEN -> "onboarding/scan_qr"
@@ -122,6 +136,7 @@ fun OnboardingLower(
                 )
             }
 
+            // The "type_token" screen displays a text field to enter the token and a button to log in
             "type_token" -> {
                 OutlinedTextField(
                     value = state.token ?: "",
@@ -136,6 +151,7 @@ fun OnboardingLower(
                         keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Send
                     ),
+                    // The "onSend" action is triggered when the user presses the "Send" button on the keyboard
                     keyboardActions = KeyboardActions(onSend = {
                         Log.d("OnboardingLower", "Token: ${state.token}")
                         viewModel.getTopNews(state.token ?: "")

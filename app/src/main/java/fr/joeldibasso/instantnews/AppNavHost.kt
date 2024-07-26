@@ -18,7 +18,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -33,13 +32,23 @@ import fr.joeldibasso.instantnews.ui.composables.Onboarding
 import fr.joeldibasso.instantnews.ui.composables.QrCodeScanScreen
 import fr.joeldibasso.instantnews.ui.composables.TopNewsScreen
 
+/**
+ * AppNavHost is the main navigation component of the app.
+ * It defines the navigation graph and the transitions between screens.
+ * @param modifier The modifier for the NavHost.
+ * @param startDestination The initial destination of the navigation graph.
+ * @param state The state of the app.
+ * @param navController The navigation controller that manages the navigation.
+ * @param viewModel The NewsViewModel used to interact with the app state.
+ * @see NewsViewModel
+ */
 @Composable
 fun AppNavHost(
-    startDestination: String,
-    navController: NavHostController,
-    state: NewsAppState,
     modifier: Modifier = Modifier,
-    viewModel: NewsViewModel = viewModel()
+    startDestination: String,
+    state: NewsAppState,
+    navController: NavHostController,
+    viewModel: NewsViewModel
 ) {
     NavHost(
         navController = navController,
@@ -47,6 +56,7 @@ fun AppNavHost(
         enterTransition = { EnterTransition.None },
         modifier = modifier
     ) {
+        // First part of the navigation graph is for onboarding
         navigation("onboarding/welcome", "onboarding") {
             composable(
                 "onboarding/welcome",
@@ -63,6 +73,8 @@ fun AppNavHost(
                     fadeOut(animationSpec = tween(200, easing = EaseOut))
                 }
             ) {
+                // Wait for initial loading to finish before navigating to onboarding. This helps
+                // prevent flickering when the user is already logged in.
                 var checkingLoggedIn by remember { mutableStateOf(true) }
                 LaunchedEffect(state.isInitialLoading) {
                     if (!state.isInitialLoading && viewModel.uiState.value.isLoggedIn) {
@@ -73,7 +85,7 @@ fun AppNavHost(
                         checkingLoggedIn = false
                     }
                 }
-                AnimatedContent(checkingLoggedIn, label = "", transitionSpec = {
+                AnimatedContent(checkingLoggedIn, label = "onboarding", transitionSpec = {
                     fadeIn(animationSpec = tween(200, easing = EaseIn)).togetherWith(
                         fadeOut(animationSpec = tween(200, easing = EaseOut))
                     )
@@ -179,6 +191,7 @@ fun AppNavHost(
                     ) + fadeOut(animationSpec = tween(200, easing = EaseIn))
                 }
             ) {
+                // Get the index of the news item from the arguments
                 val index = it.arguments?.getInt("index")
                 state.topNews.getOrNull(index ?: 0)?.let { news ->
                     NewsDetails(news = news)

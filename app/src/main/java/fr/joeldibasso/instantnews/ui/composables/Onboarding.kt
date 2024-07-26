@@ -15,12 +15,20 @@ import androidx.navigation.compose.rememberNavController
 import fr.joeldibasso.instantnews.ui.NewsViewModel
 import fr.joeldibasso.instantnews.ui.theme.InstantNewsTheme
 
+/**
+ * Generic composable used for all the onboarding screens.
+ *
+ * @param modifier The modifier for this composable.
+ * @param viewModel The NewsViewModel used to interact with the app state.
+ * @param navController The navigation controller that manages the navigation.
+ */
 @Composable
 fun Onboarding(
+    modifier: Modifier = Modifier,
     viewModel: NewsViewModel,
     navController: NavController,
-    modifier: Modifier = Modifier,
 ) {
+    // The current route is used to determine what to display in the onboarding screens
     val currentRoute = navController.currentDestination?.route ?: "onboarding/welcome"
 
     when (currentRoute.substringAfter("/")) {

@@ -19,6 +19,12 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import fr.joeldibasso.instantnews.ui.NewsViewModel
 
+/**
+ * QrCodeScanScreen is the screen where the user can scan a QR code to log in.
+ * @param modifier The modifier for the screen.
+ * @param viewModel The NewsViewModel used to interact with the app state.
+ * @param navController The navigation controller that manages the navigation.
+ */
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun QrCodeScanScreen(
@@ -31,11 +37,14 @@ fun QrCodeScanScreen(
     val cameraPermissionState = rememberPermissionState(
         Manifest.permission.CAMERA
     )
-    LaunchedEffect(key1 = true) {
+    // Request camera permission on first launch
+    LaunchedEffect(true) {
         cameraPermissionState.run { launchPermissionRequest() }
     }
+
     val context = LocalContext.current
-    LaunchedEffect(key1 = isLoggedIn) {
+    // Save token to preferences and navigate to app screen when logged in
+    LaunchedEffect(isLoggedIn) {
         if (isLoggedIn) {
             val prefs = context.getSharedPreferences("instant_news", 0)
             with(prefs.edit()) {
@@ -45,6 +54,8 @@ fun QrCodeScanScreen(
             navController.navigate("app")
         }
     }
+
+    // Navigate to login error screen if login fails
     LaunchedEffect(state.isLoginError) {
         if (state.isLoginError) {
             navController.navigate("onboarding/login_error")

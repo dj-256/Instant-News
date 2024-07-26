@@ -11,6 +11,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/**
+ * Helper composable to create a text button with a rounded corner shape and additional padding.
+ * @param modifier The modifier for the button.
+ * @param onClick The action to perform when the button is clicked.
+ * @param text The text to display on the button.
+ */
 @Composable
 fun InstantButton(
     modifier: Modifier = Modifier,

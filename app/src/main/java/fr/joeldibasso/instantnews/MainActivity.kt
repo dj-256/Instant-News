@@ -37,6 +37,7 @@ import fr.joeldibasso.instantnews.ui.theme.InstantNewsTheme
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Enable edge-to-edge and make navigation bar transparent
         enableEdgeToEdge(
             navigationBarStyle = SystemBarStyle.light(
                 Color.TRANSPARENT,
@@ -44,6 +45,8 @@ class MainActivity : ComponentActivity() {
             )
         )
         super.onCreate(savedInstanceState)
+
+        // Load token from preferences and fetch top news
         val viewModel: NewsViewModel by viewModels()
         val prefs = this.getSharedPreferences("instant_news", 0)
         val token = prefs.getString("token", null)
@@ -60,8 +63,10 @@ class MainActivity : ComponentActivity() {
             val state by viewModel.uiState.collectAsState()
             val darkMode = state.darkMode
             InstantNewsTheme(darkTheme = darkMode) {
+                // App-wide scaffold with dynamic top app bar
                 Scaffold(
                     topBar = {
+                        // Only display app bar when on app screens
                         AnimatedVisibility(currentRoute?.startsWith("app") == true) {
                             TopAppBar(
                                 title = {
@@ -87,6 +92,7 @@ class MainActivity : ComponentActivity() {
                                     }
                                 },
                                 navigationIcon = {
+                                    // Display back button when on news details screen
                                     if (currentRoute?.startsWith("app/details") == true) {
                                         IconButton(onClick = { navController.popBackStack() }) {
                                             Icon(

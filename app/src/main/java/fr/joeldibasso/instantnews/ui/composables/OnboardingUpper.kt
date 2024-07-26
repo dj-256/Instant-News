@@ -20,6 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.joeldibasso.instantnews.ui.theme.InstantNewsTheme
 
+/**
+ * OnboardingUpper is the top part of the onboarding screen.
+ * It displays the app name and a message depending on the current route.
+ * @param currentRoute The current route of the onboarding screen.
+ * @param modifier The modifier for this composable.
+ */
 @Composable
 fun OnboardingUpper(currentRoute: String, modifier: Modifier = Modifier) {
     Log.d("OnboardingUpper", "currentRoute: $currentRoute")

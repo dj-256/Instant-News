@@ -26,6 +26,12 @@ import coil.compose.AsyncImage
 import fr.joeldibasso.instantnews.model.News
 import fr.joeldibasso.instantnews.ui.theme.InstantNewsTheme
 
+/**
+ * NewsDetails is the composable that displays the details of a news article.
+ * @param news The news article to display.
+ * @param modifier The modifier for the NewsDetails.
+ * @see News
+ */
 @Composable
 fun NewsDetails(
     news: News,
@@ -58,7 +64,9 @@ fun NewsDetails(
             Spacer(modifier = Modifier.height(8.dp))
             news.urlToImage?.let {
                 AsyncImage(
-                    model = it, contentDescription = null, contentScale = ContentScale.Crop,
+                    model = it,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .height(200.dp)
                         .clip(RoundedCornerShape(10.dp))
@@ -73,6 +81,7 @@ fun NewsDetails(
                 )
             }
         }
+        // Push the button to read more to the bottom of the screen
         Spacer(modifier = Modifier.weight(1f))
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -81,6 +90,7 @@ fun NewsDetails(
                 .padding(bottom = 40.dp)
         ) {
             Button(onClick = {
+                // Open the news article in the browser
                 uriHandler.openUri(news.url)
             }) {
                 Text(

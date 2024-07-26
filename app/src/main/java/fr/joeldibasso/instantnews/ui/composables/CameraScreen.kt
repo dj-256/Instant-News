@@ -16,15 +16,20 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import fr.joeldibasso.instantnews.BarcodeAnalyzer
 
+/**
+ * CameraScreen composable that displays the camera preview and scans for QR codes
+ * @param modifier Modifier
+ * @param onQrCodeScanned Function that will be called when a QR code is scanned
+ */
 @Composable
-fun CameraScreen(onQrCodeScanned: (String) -> Unit = {}) {
+fun CameraScreen(modifier: Modifier = Modifier, onQrCodeScanned: (String) -> Unit = {}) {
     val localContext = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val cameraProviderFuture = remember {
         ProcessCameraProvider.getInstance(localContext)
     }
     AndroidView(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         factory = { context ->
             val previewView = PreviewView(context)
             val preview = Preview.Builder().build()

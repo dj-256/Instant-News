@@ -21,6 +21,13 @@ import coil.compose.AsyncImage
 import fr.joeldibasso.instantnews.model.News
 import fr.joeldibasso.instantnews.ui.theme.InstantNewsTheme
 
+/**
+ * NewsCard is the composable that displays news information in the TopNewsScreen list.
+ * It navigates to the NewsDetails screen when clicked.
+ * @param news The news to display.
+ * @param modifier The modifier for the NewsCard.
+ * @param onClick The action to perform when the card is clicked.
+ */
 @Composable
 fun NewsCard(news: News, modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
     Card(
@@ -51,6 +58,8 @@ fun NewsCard(news: News, modifier: Modifier = Modifier, onClick: () -> Unit = {}
             ) {
                 Text(
                     text = news.title,
+                    // Limit the number of lines to 3 if there is no image. This ensures
+                    // that the card height is consistent across all image-less cards.
                     minLines = news.urlToImage?.let { 1 } ?: 3,
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,

@@ -1,5 +1,8 @@
 package fr.joeldibasso.instantnews.model
 
+/**
+ * Data class representing a news article.
+ */
 data class News(
     val title: String,
     val description: String? = null,

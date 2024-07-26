@@ -20,6 +20,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import fr.joeldibasso.instantnews.R
 
+/**
+ * A composable that displays a dark mode toggle switch.
+ *
+ * @param modifier The modifier to be applied to the layout.
+ * @param isDarkMode The current state of the dark mode.
+ * @param onToggle The callback to be invoked when the dark mode is toggled.
+
+ */
 @Composable
 fun DarkModeToggle(
     modifier: Modifier = Modifier,
