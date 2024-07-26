@@ -1,8 +1,8 @@
 # Instant News
 
-<img src="doc%2Flist_light.png" width="200"  alt=""/> | <img src="doc%2Flist_dark.png" width="200"  alt=""/>
+<img src="doc%2Flist_light.png" width="300"  alt=""/> | <img src="doc%2Flist_dark.png" width="300"  alt=""/>
 :-------------------------:|:-------------------------:
-<img src="doc%2Fdetails_light.png" width="200"  alt=""/> | <img src="doc%2Fdetails_dark.png" width="200" alt=""/>
+<img src="doc%2Fdetails_light.png" width="300"  alt=""/> | <img src="doc%2Fdetails_dark.png" width="300" alt=""/>
 
 ## Description
 
