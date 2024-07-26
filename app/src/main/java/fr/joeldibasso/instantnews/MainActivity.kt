@@ -1,5 +1,6 @@
 package fr.joeldibasso.instantnews
 
+import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -25,9 +26,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import fr.joeldibasso.instantnews.ui.NewsViewModel
@@ -42,7 +46,7 @@ class MainActivity : ComponentActivity() {
             navigationBarStyle = SystemBarStyle.light(
                 Color.TRANSPARENT,
                 Color.TRANSPARENT
-            )
+            ),
         )
         super.onCreate(savedInstanceState)
 
@@ -56,12 +60,23 @@ class MainActivity : ComponentActivity() {
             viewModel.finishInitialLoad()
         }
 
+
         setContent {
             val navController = rememberNavController()
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
             val state by viewModel.uiState.collectAsState()
             val darkMode = state.darkMode
+            val view = LocalView.current
+            if (!view.isInEditMode) {
+                SideEffect {
+                    val window = (view.context as Activity).window
+                    WindowCompat.getInsetsController(window, view).apply {
+                        isAppearanceLightStatusBars = !darkMode
+                        isAppearanceLightNavigationBars = !darkMode
+                    }
+                }
+            }
             InstantNewsTheme(darkTheme = darkMode) {
                 // App-wide scaffold with dynamic top app bar
                 Scaffold(

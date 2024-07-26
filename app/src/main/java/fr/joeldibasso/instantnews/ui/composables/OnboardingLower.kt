@@ -131,7 +131,7 @@ fun OnboardingLower(
                         )
                     }, text = when (state.loginMethod) {
                         LoginMethod.TOKEN -> "Login with QR code"
-                        LoginMethod.QR_CODE -> "Login with token"
+                        LoginMethod.QR_CODE -> "Type API key"
                     }
                 )
             }
@@ -143,8 +143,8 @@ fun OnboardingLower(
                     onValueChange = {
                         viewModel.updateToken(it)
                     },
-                    label = { Text("Token") },
-                    placeholder = { Text("Enter your token") },
+                    label = { Text("API key") },
+                    placeholder = { Text("Enter your API key") },
                     shape = RoundedCornerShape(24.dp),
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(
