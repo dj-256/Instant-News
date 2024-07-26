@@ -7,14 +7,12 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.EaseIn
 import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -30,20 +28,10 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import fr.joeldibasso.instantnews.ui.NewsViewModel
 import fr.joeldibasso.instantnews.ui.composables.DarkModeToggle
-import fr.joeldibasso.instantnews.ui.composables.LoadingScreen
-import fr.joeldibasso.instantnews.ui.composables.NewsDetails
-import fr.joeldibasso.instantnews.ui.composables.Onboarding
-import fr.joeldibasso.instantnews.ui.composables.QrCodeScanScreen
-import fr.joeldibasso.instantnews.ui.composables.TopNewsScreen
 import fr.joeldibasso.instantnews.ui.theme.InstantNewsTheme
 
 class MainActivity : ComponentActivity() {
@@ -124,77 +112,13 @@ class MainActivity : ComponentActivity() {
                         }
                     },
                 ) { innerPadding ->
-                    if (state.isInitialLoading) {
-                        LoadingScreen(modifier = Modifier.padding(innerPadding))
-                    } else {
-                        NavHost(
-                            navController = navController,
-                            startDestination = if (state.isLoggedIn) "app" else "onboarding",
-                            modifier = Modifier.padding(innerPadding)
-                        ) {
-                            navigation("onboarding/welcome", "onboarding") {
-                                composable("onboarding/welcome") {
-                                    Onboarding(navController = navController)
-                                }
-                                composable("onboarding/scan_qr") {
-                                    QrCodeScanScreen(
-                                        navController = navController,
-                                        viewModel = viewModel
-                                    )
-                                }
-                            }
-                            navigation(
-                                "app/top_news",
-                                "app",
-                            ) {
-                                composable(
-                                    "app/top_news",
-                                    popEnterTransition = {
-                                        scaleIn(
-                                            animationSpec = tween(250, easing = EaseOut)
-                                        ) + fadeIn(animationSpec = tween(200, easing = EaseOut))
-                                    },
-                                    exitTransition = {
-                                        slideOutOfContainer(
-                                            animationSpec = tween(250, easing = EaseOut),
-                                            towards = AnimatedContentTransitionScope.SlideDirection.Start
-                                        )
-                                    }
-                                ) {
-                                    TopNewsScreen(
-                                        viewModel = viewModel,
-                                        navController = navController
-                                    )
-                                }
-
-                                composable(
-                                    "app/details/{index}",
-                                    arguments = listOf(navArgument("index") {
-                                        type = NavType.IntType
-                                    }),
-                                    enterTransition = {
-                                        slideIntoContainer(
-                                            animationSpec = tween(250, easing = EaseOut),
-                                            towards = AnimatedContentTransitionScope.SlideDirection.Start
-                                        )
-                                    },
-                                    popExitTransition = {
-                                        slideOutOfContainer(
-                                            animationSpec = tween(250, easing = EaseIn),
-                                            towards = AnimatedContentTransitionScope.SlideDirection.End
-                                        ) + fadeOut(animationSpec = tween(200, easing = EaseIn))
-                                    }
-                                ) {
-                                    val index = it.arguments?.getInt("index")
-                                    state.topNews.getOrNull(index ?: 0)?.let { news ->
-                                        NewsDetails(news = news)
-                                    } ?: run {
-                                        LoadingScreen(modifier = Modifier.padding(innerPadding))
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    AppNavHost(
+                        startDestination = "onboarding",
+                        navController = navController,
+                        state = state,
+                        viewModel = viewModel,
+                        modifier = Modifier.padding(innerPadding)
+                    )
                 }
             }
         }

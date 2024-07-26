@@ -1,6 +1,7 @@
 package fr.joeldibasso.instantnews
 
-import android.annotation.SuppressLint
+import androidx.annotation.OptIn
+import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -16,7 +17,7 @@ class BarcodeAnalyzer(private val onQrCodeScanned: (String) -> Unit = {}) : Imag
 
     private val scanner = getClient(options)
 
-    @SuppressLint("UnsafeOptInUsageError")
+    @OptIn(ExperimentalGetImage::class)
     override fun analyze(imageProxy: ImageProxy) {
         imageProxy.image?.let { image ->
             scanner.process(

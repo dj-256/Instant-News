@@ -12,9 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -25,8 +23,8 @@ import fr.joeldibasso.instantnews.ui.NewsViewModel
 @Composable
 fun QrCodeScanScreen(
     modifier: Modifier = Modifier,
-    viewModel: NewsViewModel = viewModel(),
-    navController: NavController = rememberNavController()
+    viewModel: NewsViewModel,
+    navController: NavController,
 ) {
     val state by viewModel.uiState.collectAsState()
     val isLoggedIn = state.isLoggedIn
@@ -45,6 +43,11 @@ fun QrCodeScanScreen(
                 apply()
             }
             navController.navigate("app")
+        }
+    }
+    LaunchedEffect(state.isLoginError) {
+        if (state.isLoginError) {
+            navController.navigate("onboarding/login_error")
         }
     }
 
