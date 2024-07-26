@@ -35,6 +35,7 @@ import androidx.core.view.WindowCompat
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import fr.joeldibasso.instantnews.ui.NewsViewModel
+import fr.joeldibasso.instantnews.ui.composables.AppNavHost
 import fr.joeldibasso.instantnews.ui.composables.DarkModeToggle
 import fr.joeldibasso.instantnews.ui.theme.InstantNewsTheme
 

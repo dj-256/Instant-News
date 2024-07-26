@@ -1,4 +1,4 @@
-package fr.joeldibasso.instantnews
+package fr.joeldibasso.instantnews.ui.composables
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope
@@ -25,12 +25,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import fr.joeldibasso.instantnews.ui.NewsViewModel
-import fr.joeldibasso.instantnews.ui.composables.LoadingScreen
-import fr.joeldibasso.instantnews.ui.composables.NewsAppState
-import fr.joeldibasso.instantnews.ui.composables.NewsDetails
-import fr.joeldibasso.instantnews.ui.composables.Onboarding
-import fr.joeldibasso.instantnews.ui.composables.QrCodeScanScreen
-import fr.joeldibasso.instantnews.ui.composables.TopNewsScreen
 
 /**
  * AppNavHost is the main navigation component of the app.
@@ -81,7 +75,7 @@ fun AppNavHost(
                         navController.navigate("app") {
                             popUpTo("onboarding/welcome") { inclusive = true }
                         }
-                    } else {
+                    } else if (!viewModel.uiState.value.isLoggedIn) {
                         checkingLoggedIn = false
                     }
                 }
