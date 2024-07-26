@@ -6,7 +6,7 @@
 
 ## Description
 
-This application was developed as part of my hire process
+This application was developed as part of my hiring process
 for [Instant System](https://instant-system.com/). It uses
 the [News API](https://newsapi.org/) to fetch the latest news from various sources and display them
 in a list-detail
